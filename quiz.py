@@ -1,15 +1,21 @@
 # quiz.py
 
-correct_answer_count = 0
+answers_correct = 0
 
-# First Question
-answer = int(input("What's 1 + 1? "))
+# Ask a question
+print("Who is the coolest teacher in the world?")
 
-if answer == 2:
-    print("You're correct!")
-    correct_answer_count += 1
+# Get their answer
+answer = input().lower().strip("!,.? ")
 
-if correct_answer_count > 1:
-    print(f"You got {correct_answer_count} questions right!")
+# See if they're right
+if answer in ["mr. allan", "bill nye"]:
+    print("You got it right!")
+    answers_correct += 1
 else:
-    print(f"You got {correct_answer_count} question right!")
+    print("Sorry, not sorry. It's either Mr. Allan or Bill Nye.")
+
+if answers_correct != 1:
+    print(f"You got {answers_correct} answers correct!")
+else:
+    print(f"You got {answers_correct} answer correct!")
