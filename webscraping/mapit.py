@@ -15,8 +15,3 @@ else:
     address = pyperclip.paste()
 
 webbrowser.open(prefix + address)
-
-
-# TODO: Get the address from the clipboard.
-
-
