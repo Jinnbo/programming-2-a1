@@ -30,7 +30,7 @@ class Snow:
 
         self.colour = WHITE
 
-        self.vel_y = 3
+        self.vel_y = random.choice([1, 2])
 
     def draw(self, screen):
         """Draws the snow on the screen.
@@ -49,7 +49,13 @@ class Snow:
         )
 
     def update(self):
+        """Update location of snow."""
         self.y += self.vel_y
+
+        # reset location if it reaches the bottom
+        if self.y > HEIGHT:
+            self.x = random.randrange(0, WIDTH)
+            self.y = random.randrange(-15, 0)
 
 
 def main():
@@ -66,8 +72,14 @@ def main():
 
     # create snow objects
     snow_list = []
+    # farther snow
     for i in range(NUM_SNOW):
         snow = Snow()
+        snow_list.append(snow)
+    # closer snow
+    for i in range(NUM_SNOW):
+        snow = Snow(random.choice([3, 4]))
+        snow.vel_y = random.choice([4, 5])
         snow_list.append(snow)
 
     # ----- MAIN LOOP
