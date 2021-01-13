@@ -42,6 +42,14 @@ class Rectangle:
             ]
         )
 
+    def update(self):
+        """Updates the location of the block in space.
+
+        Returns:
+            None
+        """
+        self.x += self.vel_x
+
 
 def main():
     pygame.init()
@@ -56,6 +64,7 @@ def main():
     clock = pygame.time.Clock()
 
     block_one = Rectangle((0, 255, 0))
+    block_one.vel_x = -1
 
     # ----- MAIN LOOP
     while not done:
@@ -65,6 +74,8 @@ def main():
                 done = True
 
         # ----- LOGIC
+        # update the position of the block
+        block_one.update()
 
         # ----- DRAW
         screen.fill(BLACK)
