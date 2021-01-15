@@ -13,10 +13,11 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 SKY_BLUE = (95, 165, 228)
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1920
+HEIGHT = 1080
 TITLE = "Sprite Example"
 NUM_JEWELS = 75
+
 
 class Jewel(pygame.sprite.Sprite):
     def __init__(self):
@@ -30,6 +31,19 @@ class Jewel(pygame.sprite.Sprite):
         # Rect is Rectangle (x, y, width, height)
         self.rect = self.image.get_rect()
 
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+        self.image = pygame.image.load("./images/link.png")
+
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        """Changes the position of the player
+        based on the mouse's position"""
+        self.rect.center = pygame.mouse.get_pos()
+
 
 def main():
     pygame.init()
@@ -42,6 +56,7 @@ def main():
     # ----- LOCAL VARIABLES
     done = False
     clock = pygame.time.Clock()
+    score = 0
 
     # Sprite group and sprite creation
     all_sprites_group = pygame.sprite.Group()
@@ -54,6 +69,10 @@ def main():
         jewel.rect.y = random.randrange(HEIGHT - jewel.rect.height)
         all_sprites_group.add(jewel)
 
+    # Player creation
+    player = Player()
+    all_sprites_group.add(player)
+
     # ----- MAIN LOOP
     while not done:
         # -- Event Handler
@@ -62,6 +81,7 @@ def main():
                 done = True
 
         # ----- LOGIC
+        all_sprites_group.update()
 
         # ----- DRAW
         screen.fill(BLACK)
