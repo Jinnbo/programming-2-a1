@@ -13,8 +13,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 SKY_BLUE = (95, 165, 228)
-WIDTH = 1920
-HEIGHT = 1080
+WIDTH = 1280
+HEIGHT = 720
 TITLE = "Sprite Example"
 NUM_JEWELS = 75
 
@@ -50,7 +50,7 @@ def main():
 
     # ----- SCREEN PROPERTIES
     size = (WIDTH, HEIGHT)
-    screen = pygame.display.set_mode(size)
+    screen = pygame.display.set_mode(size, flags=pygame.SCALED)
     pygame.display.set_caption(TITLE)
 
     # ----- LOCAL VARIABLES
@@ -59,7 +59,7 @@ def main():
     score = 0
 
     # Sprite group and sprite creation
-    all_sprites_group = pygame.sprite.Group()
+    all_sprites_group = pygame.sprite.RenderUpdates()
     jewels_group = pygame.sprite.Group()
 
     # Jewel creation
@@ -74,6 +74,9 @@ def main():
     # Player creation
     player = Player()
     all_sprites_group.add(player)
+
+    dirty_rectangles = []
+
 
     # ----- MAIN LOOP
     while not done:
@@ -91,13 +94,12 @@ def main():
             score += 1
             print(score)
 
-
         # ----- DRAW
         screen.fill(BLACK)
-        all_sprites_group.draw(screen)
+        dirty_rectangles = all_sprites_group.draw(screen)
 
         # ----- UPDATE
-        pygame.display.flip()
+        pygame.display.update(dirty_rectangles)
         clock.tick(60)
 
     pygame.quit()
