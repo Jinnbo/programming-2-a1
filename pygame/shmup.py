@@ -16,11 +16,14 @@ WIDTH = 720
 HEIGHT = 1280
 TITLE = "SHMUP"
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
         self.image = pygame.image.load("./images/galaga_ship.png")
+        # scaling the image down .5x
+        self.image = pygame.transform.scale(self.image, (64, 64))
 
         self.rect = self.image.get_rect()
 
@@ -55,6 +58,29 @@ class Enemy(pygame.sprite.Sprite):
             self.x_vel *= -1
 
 
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, coords):
+        """
+        Arguments:
+            coords - tuple of x,y
+        """
+        super().__init__()
+
+        self.image = pygame.image.load("./images/bullet.png")
+        # scale the image to 22x36px
+        self.image = pygame.transform.scale(self.image, (22,36))
+
+        self.rect = self.image.get_rect()
+        # initial location at coords
+        self.rect.centerx, self.rect.bottom = coords
+
+        self.y_vel = -3
+
+    def update(self):
+        self.rect.y += self.y_vel
+
+
+
 def main():
     pygame.init()
 
@@ -70,6 +96,7 @@ def main():
     # Sprite Groups
     all_sprites = pygame.sprite.RenderUpdates()
     enemy_sprites = pygame.sprite.Group()
+    player_bullet_sprites = pygame.sprite.Group()
 
     #  --- enemies
     enemy = Enemy(100)
@@ -86,15 +113,22 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                # create a bullet
+                bullet = Bullet(player.rect.midtop)
+                all_sprites.add(bullet)
+                player_bullet_sprites.add(bullet)
 
         # ----- LOGIC
         all_sprites.update()
 
         # ----- DRAW
         screen.fill(BLACK)
+        # draw and return just the dirty rectangles
         dirty_rectangles = all_sprites.draw(screen)
 
         # ----- UPDATE
+        # update only dirty rectangles
         pygame.display.update(dirty_rectangles)
         clock.tick(60)
 
